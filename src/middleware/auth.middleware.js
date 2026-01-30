@@ -10,35 +10,34 @@ const authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
 
   // Header format: "Bearer TOKEN"
-  if (!authHeader) {
-    return res.status(401).json({
-      message: "Authorization header missing"
-    });
-  }
+if (!authHeader) {
+  const error = new Error("Authorization header missing");
+  error.statusCode = 401;
+  return next(error);
+}
 
   // 2. Extract token
   const token = authHeader.split(" ")[1];
 
-  if (!token) {
-    return res.status(401).json({
-      message: "Token missing"
-    });
-  }
+if (!token) {
+  const error = new Error("Token missing");
+  error.statusCode = 401;
+  return next(error);
+}
+
 
   // 3. Verify token
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) {
-      return res.status(403).json({
-        message: "Invalid or expired token"
-      });
-    }
+jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+  if (err) {
+    err.statusCode = 401;
+    err.message = "Invalid or expired token";
+    return next(err);
+  }
 
-    // 4. Attach user info to request
-    req.user = decoded;
+  req.user = decoded;
+  next();
+});
 
-    // 5. Allow request to continue
-    next();
-  });
 };
 
 module.exports = authenticateToken;

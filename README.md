@@ -1,115 +1,294 @@
-## Node.js Authentication Backend
+# Node.js Authentication Backend
 
-Purpose
-This repository contains a learning-focused, production-structured backend authentication system built using Node.js, Express, and MySQL.
+## Purpose
 
-The primary goal of this project is not just to implement authentication features, but to deeply understand backend execution flow, layered architecture, database interaction, and real-world debugging scenarios. The project is built step by step, focusing on correctness, clarity, and reasoning rather than rushing features.
+This repository contains a **learning-focused, production-structured authentication backend** built using **Node.js, Express, and MySQL**.
 
-This README reflects the current completed state of the project and will be extended as development continues.
+The goal of this project is **not just to implement authentication**, but to **deeply understand backend execution flow**, layered architecture, middleware behavior, database interaction, and **real-world debugging techniques** used by professional backend engineers.
 
----
-
-### Tech Stack
-
-Node.js  
-Express.js  
-MySQL  
-mysql2  
-bcryptjs  
-dotenv  
-nodemon (development)
+The project is built **phase by phase**, ensuring every layer is clearly understood before moving forward.
 
 ---
 
-### Project Structure
+## Tech Stack
 
-src/  
-app.js  
-server.js  
-config/  
-db.js  
-models/  
-user.model.js  
-auth/  
-auth.routes.js  
-auth.controller.js  
-auth.service.js
+- Node.js
+- Express.js
+- MySQL
+- mysql2
+- bcryptjs
+- jsonwebtoken
+- dotenv
+- nodemon (development)
 
 ---
 
-### Architectural Approach
+## Complete Folder Structure
 
-This project follows a layered backend architecture where each layer has a single, clear responsibility.
+```
+src/
+├── server.js                 # Entry point – starts the server
+├── app.js                    # Application brain – middleware & routes
+│
+├── config/
+│   └── db.js                 # Database connection setup
+│
+├── middlewares/
+│   ├── auth.middleware.js    # JWT verification middleware
+│   └── role.middleware.js    # Role-based authorization middleware
+│
+├── models/
+│   └── user.model.js         # Database queries (users table)
+│
+├── auth/
+│   ├── auth.routes.js        # Auth-related routes
+│   ├── auth.controller.js    # HTTP handling & responses
+│   └── auth.service.js       # Business logic (auth rules)
+│
+└── utils/
+    └── token.util.js         # JWT generation helper
+```
 
-### Request flow:
-
-**Client** → **Route** → **Controller** → **Service** → **Model** → **Database** → **Response**
-
-Routes handle URL mapping.
-Controllers handle HTTP concerns and validation.
-Services contain business logic.
-Models handle database queries only.
-
-This separation makes the system easier to debug, test, and scale.
-
----
-
-## Implemented
-
-1. Server and Application Setup
-   The Express server is initialized with a clean entry point. Environment variables are loaded using dotenv, and a development workflow is configured using nodemon.
-
-2. Database Connection
-   A MySQL connection pool is configured using mysql2. Database connectivity is verified during server startup, ensuring early detection of configuration issues.
-
-3. User Database Schema
-   A users table is designed with proper constraints, including required fields, unique email enforcement, ENUM-based roles, and timestamp tracking.
-
-4. User Registration (Signup) API
-   A POST /auth/register API is implemented.
-   It performs input validation, checks for duplicate users, hashes passwords securely, inserts users into the database, and returns a safe response without exposing sensitive data.
-
-5. Password Security
-   Passwords are hashed using bcrypt before storage. Plain-text passwords are never saved, following security best practices.
-
-6. Execution Flow Understanding
-   The project emphasizes understanding how an API request moves through the backend:
-
-Postman request → Express route → Controller → Service → Model → MySQL → Response back to client.
-
-Each step was traced and debugged during development.
-
-7. Real-World Debugging Experience
-   Several real backend issues were encountered and resolved, including environment variable misconfiguration, database constraint violations, ENUM errors, SQL insert order mismatches, and import/export mistakes. Each issue was fixed by tracing execution flow instead of guessing.
+This structure ensures **clear separation of concerns** and mirrors real production backends.
 
 ---
 
-### Testing
+## Architectural Approach
 
-APIs are tested using Postman with proper JSON request bodies and headers. Database changes are verified using MySQL Workbench. Duplicate registrations are correctly rejected.
+The project follows a **layered backend architecture**, where each layer has **one responsibility only**.
+
+### Core Request Flow
+
+**Client**
+→ **Middleware**
+→ **Route**
+→ **Controller**
+→ **Service**
+→ **Model**
+→ **Database**
+→ **Response**
+
+### Responsibility Breakdown
+
+- **server.js**
+  - Starts the HTTP server
+  - Does not contain app logic
+
+- **app.js**
+  - Registers middleware
+  - Registers routes with prefixes
+  - Controls request entry into the system
+
+- **Middlewares**
+  - Handle cross-cutting concerns (JWT, roles)
+  - Execute before controllers
+
+- **Routes**
+  - Map URLs to controllers
+  - No logic
+
+- **Controllers**
+  - Handle HTTP request & response
+  - Call services
+  - No business logic
+
+- **Services**
+  - Contain business rules
+  - Handle authentication logic
+  - Coordinate models
+
+- **Models**
+  - Execute database queries only
 
 ---
 
-Current Status
-
-Server is running successfully.
-Database connection is stable.
-User signup functionality is complete and working.
-Password hashing is verified.
-Layered architecture is in place.
-
-This repository represents a solid backend foundation built with an execution-flow-first mindset.
+## Development Phases (ALL 7 PHASES)
 
 ---
 
-Notes
+## 🟢 Phase 1 – Server & Application Setup
 
-This project is intentionally built slowly and carefully to strengthen backend fundamentals. The focus is on understanding how things work internally rather than simply making features work.
+- Express server initialized via `server.js`
+- Application logic separated into `app.js`
+- Environment variables loaded using `dotenv`
+- Development workflow configured using `nodemon`
 
-The README will be updated as new features such as login and token-based authentication are added.
+**Key learning:**
+Understanding the difference between **starting the server** and **handling requests**.
 
 ---
 
-License
+## 🟢 Phase 2 – Database Connection
 
-This project is created for learning and educational purposes.
+- MySQL connection pool created using `mysql2`
+- Database connection tested during app startup
+- Fail-fast strategy for DB misconfiguration
+
+**Key learning:**
+Database issues should surface early, not during API execution.
+
+---
+
+## 🟢 Phase 3 – Routing Layer
+
+- Routes organized using `auth.routes.js`
+- Route prefixes registered in `app.js`
+- Final URLs formed using:
+
+  ```
+  app.js prefix + route path
+  ```
+
+Example:
+
+```
+/auth + /register → /auth/register
+```
+
+**Key learning:**
+Most `Cannot GET /…` errors originate from incorrect routing setup.
+
+---
+
+## 🟢 Phase 4 – Controller Layer
+
+- Controllers handle:
+  - Request data extraction
+  - Validation checks
+  - Sending responses
+
+- Controllers do **not**:
+  - Talk to the database
+  - Contain business logic
+
+**Key learning:**
+Controllers act as **traffic managers**, not decision makers.
+
+---
+
+## 🟢 Phase 5 – Service Layer (Business Logic)
+
+- Authentication logic implemented in services
+- Responsibilities include:
+  - Checking existing users
+  - Hashing passwords
+  - Generating tokens
+  - Applying business rules
+
+**Key learning:**
+Business logic must remain independent of HTTP and Express.
+
+---
+
+## 🟢 Phase 6 – Middleware (JWT & Roles)
+
+### JWT Authentication Middleware
+
+- Extracts token from request headers
+- Verifies token validity
+- Attaches decoded user data to `req.user`
+
+### Role Authorization Middleware
+
+- Reads `req.user`
+- Checks allowed roles
+- Blocks unauthorized access
+
+**Execution order:**
+
+```
+Request
+ → JWT middleware
+ → Role middleware
+ → Controller
+```
+
+**Key learning:**
+Middleware runs **before controllers** and controls access flow.
+
+---
+
+## 🟢 Phase 7 – Database Models & Data Flow
+
+- Models contain **only SQL queries**
+- No HTTP or business logic
+- Services call models
+- Data flows back up to controllers
+
+**Key learning:**
+Models are data access layers, not decision makers.
+
+---
+
+## Implemented API (Current)
+
+### User Registration
+
+**Endpoint**
+
+```
+POST /auth/register
+```
+
+**Flow**
+
+```
+Client
+ → auth.routes.js
+ → auth.controller.js
+ → auth.service.js
+ → user.model.js
+ → MySQL
+ → Response
+```
+
+**Features**
+
+- Input validation
+- Duplicate email prevention
+- Password hashing using bcrypt
+- Safe response (no sensitive data)
+
+---
+
+## Testing
+
+- APIs tested using **Postman**
+- Database verified using **MySQL Workbench**
+- Duplicate registration handled correctly
+- Error scenarios tested intentionally
+
+---
+
+## Current Status
+
+- Server runs reliably
+- Database connection stable
+- Signup API complete
+- JWT middleware implemented
+- Role-based authorization in place
+- Full layered architecture implemented
+- Execution flow clearly understood
+
+---
+
+## Notes
+
+This project is intentionally built **slowly and methodically** to strengthen backend fundamentals.
+
+The focus is on:
+
+- Execution flow understanding
+- Debugging with logic
+- Clean architecture
+- Production-ready thinking
+
+This repository represents a **strong backend foundation**, not just a demo app.
+
+---
+
+## License
+
+This project is created for **learning and educational purposes**.
+
+---

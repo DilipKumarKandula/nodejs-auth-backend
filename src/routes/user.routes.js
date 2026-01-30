@@ -10,10 +10,12 @@ router.get(
   authenticateToken,
   authorizeRoles("USER", "ADMIN"),
   (req, res) => {
-    res.status(200).json({
-      message: "User profile accessed",
-      user: req.user
-    });
+  res.status(200).json({
+    success: true,
+    message: "User profile accessed",
+    data: req.user
+  });
+
   }
 );
 

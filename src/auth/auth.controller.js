@@ -1,5 +1,4 @@
-const { registerUser,loginUser  } = require("./auth.service");
-
+const { registerUser, loginUser } = require("./auth.service");
 
 /**
  * Register user controller
@@ -8,23 +7,23 @@ const registerController = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // Basic validation
     if (!name || !email || !password) {
       return res.status(400).json({
         message: "Email and password are required"
       });
     }
 
-    // Call service
     const newUser = await registerUser(name, email, password);
 
-    res.status(201).json({
+    return res.status(201).json({
+      success: true,
       message: "User registered successfully",
       data: {
         email: newUser.email,
         role: newUser.role
       }
     });
+
   } catch (error) {
     res.status(400).json({
       message: error.message
@@ -32,36 +31,36 @@ const registerController = async (req, res) => {
   }
 };
 
+/**
+ * Login user controller
+ */
+const loginUserController = async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-const loginUserController = async (req, res)=>{
-  try{
-    const {email, password}=req.body
-
-    // Validate input
-    if(!email || !password){
+    if (!email || !password) {
       return res.status(400).json({
-        message:"Email and password are required"
-      })
+        message: "Email and password are required"
+      });
     }
 
-    // call service 
-    const user = await loginUser(email, password);
-     
-    // Success response
+    const result = await loginUser(email, password);
+
     return res.status(200).json({
-      message:"Login successful",
-      data:user
+      success: true,
+      message: "Login successful",
+      data: {
+        token: result.token,
+        user: result.user
+      }
     });
 
-  } catch(error){
-    return res.status(401).json(
-      {
-        message: error.message
-      }
-    )
+  } catch (error) {
+    return res.status(401).json({
+      message: error.message
+    });
   }
-}
-
+};
 
 module.exports = {
   registerController,
