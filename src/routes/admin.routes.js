@@ -4,14 +4,13 @@ const router = express.Router();
 const authenticateToken = require("../middleware/auth.middleware");
 const authorizeRoles = require("../middleware/role.middleware");
 
-// USER PROFILE (RBAC PROTECTED)
 router.get(
-  "/user/profile",
+  "/admin/dashboard",
   authenticateToken,
-  authorizeRoles("USER", "ADMIN"),
+  authorizeRoles("ADMIN"),
   (req, res) => {
     res.status(200).json({
-      message: "User profile accessed",
+      message: "Admin dashboard accessed",
       user: req.user
     });
   }
