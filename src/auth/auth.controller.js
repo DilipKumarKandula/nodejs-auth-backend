@@ -1,4 +1,12 @@
-const { registerUser, loginUser } = require("./auth.service");
+// src\auth\auth.controller.js
+
+const {
+  registerUser,
+  loginUser,
+  refreshAccessToken,
+  logoutUser
+} = require("./auth.service");
+
 
 /**
  * Register user controller
@@ -50,7 +58,8 @@ const loginUserController = async (req, res) => {
       success: true,
       message: "Login successful",
       data: {
-        token: result.token,
+        accessToken: result.accessToken,
+        refreshToken: result.refreshToken,
         user: result.user
       }
     });
@@ -62,7 +71,52 @@ const loginUserController = async (req, res) => {
   }
 };
 
+const refreshTokenController = async (req, res) => {
+  try {
+    const { refreshToken } = req.body;
+
+    const result = await refreshAccessToken(refreshToken);
+
+    return res.status(200).json({
+      success: true,
+      message: "Access token refreshed",
+      data: {
+        accessToken: result.accessToken
+      }
+    });
+  } catch (error) {
+    return res.status(401).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+/**
+ * Logout controller
+ */
+const logoutController = async (req, res) => {
+  try {
+    const { refreshToken } = req.body;
+
+    await logoutUser(refreshToken);
+
+    return res.status(200).json({
+      success: true,
+      message: "Logged out successfully"
+    });
+  } catch (error) {
+    return res.status(400).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
 module.exports = {
   registerController,
-  loginUserController
+  loginUserController,
+  refreshTokenController,
+  logoutController
+
 };
