@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains a **learning-focused, production-structured authentication backend** built using **Node.js, Express, and MySQL**.
+This repository contains a **production-structured authentication backend** built using **Node.js, Express, and MySQL**.
 
 The goal of this project is **not just to implement authentication**, but to **deeply understand backend execution flow**, layered architecture, middleware behavior, database interaction, token-based authentication, and **real-world debugging techniques used by professional backend engineers**.
 
