@@ -1,7 +1,9 @@
 // src/middleware/error.middleware.js
 
+const logger = require("../config/logger");
+
 const errorHandler = (err, req, res, next) => {
-  console.error("❌ Error:", err.message);
+  logger.error(err.message); // ✅ instead of console.error
 
   const statusCode = err.statusCode || 500;
 
@@ -11,4 +13,4 @@ const errorHandler = (err, req, res, next) => {
   });
 };
 
-module.exports = errorHandler;
+module.exports = errorHandler

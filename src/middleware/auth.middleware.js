@@ -33,7 +33,7 @@ jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     err.message = "Invalid or expired token";
     return next(err);
   }
-  console.log("JWT decoded payload:", decoded);
+
   req.user = decoded;
   next();
 });

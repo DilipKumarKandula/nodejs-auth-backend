@@ -1,8 +1,34 @@
 # nodejs-auth-backend
 
+## 🚀 Production-Grade Authentication Backend
+
+A scalable, production-structured authentication system built using Node.js, Express, and MySQL.
+
+This project demonstrates real-world backend engineering practices including layered architecture, JWT-based authentication, refresh token lifecycle management, role-based access control (RBAC), and API documentation using Swagger.
+
+---
+
+## 🎯 Problem Statement
+
+Most beginner authentication systems are built as simple CRUD applications without proper structure, scalability, or security considerations.
+
+This project solves that by implementing a clean, production-ready authentication system that reflects how backend services are designed in real-world applications.
+
+---
+
+## ⚡ Key Highlights
+
+- Clean layered architecture (Controller → Service → Model)
+- JWT authentication with refresh token lifecycle
+- Role-based access control (RBAC)
+- Centralized error handling middleware
+- Swagger API documentation for testing
+- Secure password hashing using bcrypt
+- Production-ready backend structure
+
 ## Overview
 
-This repository contains a **learning-focused, production-structured authentication backend** built using **Node.js, Express, and MySQL**.
+This repository contains a **production-structured authentication backend** built using **Node.js, Express, and MySQL**.
 
 The goal of this project is **not just to implement authentication**, but to **deeply understand backend execution flow**, layered architecture, middleware behavior, database interaction, token-based authentication, and **real-world debugging techniques used by professional backend engineers**.
 
@@ -23,6 +49,14 @@ The project is built **phase by phase**, ensuring each layer and concept is clea
 - Swagger UI (API documentation & testing)
 
 ---
+
+## 🧠 Technical Decisions
+
+- **JWT Authentication** → Enables stateless and scalable authentication
+- **Refresh Tokens** → Allows secure session continuation without re-login
+- **MySQL** → Structured relational database for user management
+- **Layered Architecture** → Improves maintainability, scalability, and testability
+- **Middleware-based Design** → Centralizes cross-cutting concerns like auth and error handling
 
 ## Complete Folder Structure
 

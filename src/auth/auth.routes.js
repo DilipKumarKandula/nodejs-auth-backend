@@ -12,6 +12,11 @@ const {
 
 const authenticateToken = require("../middleware/auth.middleware");
 const authorizeRoles = require("../middleware/role.middleware");
+const {
+  validate,
+  registerSchema,
+  loginSchema,
+} = require("../middleware/validation.middleware");
 
 /**
  * @swagger
@@ -49,7 +54,7 @@ const authorizeRoles = require("../middleware/role.middleware");
  *       400:
  *         description: Validation error
  */
-router.post("/register", registerController);
+router.post("/register", validate(registerSchema), registerController);
 
 /**
  * @swagger
@@ -77,7 +82,7 @@ router.post("/register", registerController);
  *       401:
  *         description: Invalid credentials
  */
-router.post("/login", loginUserController);
+router.post("/login", validate(loginSchema), loginUserController);
 
 /**
  * @swagger
@@ -154,6 +159,8 @@ router.get(
     });
   }
 );
+
+
 
 module.exports = router;
 
