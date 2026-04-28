@@ -10,7 +10,7 @@ const options = {
     },
     servers: [
       {
-        url: "https://auth-backend-hta6.onrender.com/api-docs/#",
+        url: "https://auth-backend-hta6.onrender.com/api-docs/v1",
         description: "Local server"
       }
     ],
