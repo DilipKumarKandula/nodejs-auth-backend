@@ -1,100 +1,44 @@
-# nodejs-auth-backend
+# 🚀 Node.js Auth Backend (Production-Ready)
 
-## 🚀 Production-Grade Authentication Backend
+A scalable, production-grade authentication and authorization backend built using Node.js, Express, and MySQL.
 
-A scalable, production-structured authentication system built using Node.js, Express, and MySQL.
-
-This project demonstrates real-world backend engineering practices including layered architecture, JWT-based authentication, refresh token lifecycle management, role-based access control (RBAC), and API documentation using Swagger.
+This project demonstrates real-world backend engineering practices including JWT-based authentication, refresh token lifecycle management, role-based access control (RBAC), and secure API design.
 
 ---
 
-## 🎯 Problem Statement
+## 🌐 Live API
 
-Most beginner authentication systems are built as simple CRUD applications without proper structure, scalability, or security considerations.
+**Base URL**
 
-This project solves that by implementing a clean, production-ready authentication system that reflects how backend services are designed in real-world applications.
+```
+https://auth-backend-hta6.onrender.com
+```
+
+**Swagger Documentation**
+
+```
+https://auth-backend-hta6.onrender.com/api-docs
+```
 
 ---
 
-## ⚡ Key Highlights
+## ⚡ Key Features
 
-- Clean layered architecture (Controller → Service → Model)
-- JWT authentication with refresh token lifecycle
+- JWT-based authentication (Access + Refresh tokens)
+- Secure refresh token lifecycle with DB persistence
 - Role-based access control (RBAC)
-- Centralized error handling middleware
-- Swagger API documentation for testing
-- Secure password hashing using bcrypt
-- Production-ready backend structure
-
-## Overview
-
-This repository contains a **production-structured authentication backend** built using **Node.js, Express, and MySQL**.
-
-The goal of this project is **not just to implement authentication**, but to **deeply understand backend execution flow**, layered architecture, middleware behavior, database interaction, token-based authentication, and **real-world debugging techniques used by professional backend engineers**.
-
-The project is built **phase by phase**, ensuring each layer and concept is clearly understood before moving forward.
+- Layered architecture (Controller → Service → Model)
+- Centralized error handling
+- API rate limiting (DDoS/basic abuse protection)
+- Secure HTTP headers using Helmet
+- CORS configuration for controlled access
+- Swagger UI for API testing & documentation
 
 ---
 
-## Tech Stack
+## 🏗️ Architecture
 
-- Node.js
-- Express.js
-- MySQL
-- mysql2
-- bcryptjs
-- jsonwebtoken
-- dotenv
-- nodemon (development)
-- Swagger UI (API documentation & testing)
-
----
-
-## 🧠 Technical Decisions
-
-- **JWT Authentication** → Enables stateless and scalable authentication
-- **Refresh Tokens** → Allows secure session continuation without re-login
-- **MySQL** → Structured relational database for user management
-- **Layered Architecture** → Improves maintainability, scalability, and testability
-- **Middleware-based Design** → Centralizes cross-cutting concerns like auth and error handling
-
-## Complete Folder Structure
-
-```
-src/
-├── server.js                 # Entry point – starts the HTTP server
-├── app.js                    # Application core – middleware & routes
-│
-├── config/
-│   ├── db.js                 # MySQL connection pool
-│   └── swagger.js            # Swagger/OpenAPI configuration
-│
-├── middleware/
-│   ├── auth.middleware.js    # JWT verification middleware
-│   ├── role.middleware.js    # Role-based authorization (RBAC)
-│   └── error.middleware.js   # Centralized error handling
-│
-├── models/
-│   └── user.model.js         # Database queries (users table)
-│
-├── auth/
-│   ├── auth.routes.js        # Authentication routes
-│   ├── auth.controller.js    # HTTP request/response handling
-│   └── auth.service.js       # Business logic (auth rules)
-│
-└── utils/
-    └── token.util.js         # JWT generation helpers
-```
-
-This structure enforces **separation of concerns** and mirrors **real production backends**.
-
----
-
-## Architectural Approach
-
-The project follows a **layered backend architecture**, where each layer has **one clear responsibility**.
-
-### Core Request Flow
+This project follows a clean, layered architecture used in production systems:
 
 ```
 Client
@@ -107,307 +51,199 @@ Client
  → Response
 ```
 
----
+### Responsibilities
 
-## Responsibility Breakdown
-
-### `server.js`
-
-- Starts the HTTP server
-- Listens on a configured port
-- Contains no application logic
-
-### `app.js`
-
-- Registers global middleware
-- Registers route prefixes
-- Acts as the entry point for all requests
-
-### Middleware
-
-- Handle cross-cutting concerns
-- Execute **before controllers**
-- Examples:
-  - JWT authentication
-  - Role-based authorization
-  - Global error handling
-
-### Routes
-
-- Map URLs to controllers
-- No business logic
-
-### Controllers
-
-- Handle HTTP input & output
-- Perform validation
-- Call services
-- Do **not** contain business logic
-
-### Services
-
-- Contain authentication and authorization rules
-- Hash passwords
-- Generate JWTs
-- Coordinate model calls
-
-### Models
-
-- Execute SQL queries only
-- No HTTP logic
-- No business decisions
+- **Controllers** → Handle HTTP requests/responses
+- **Services** → Business logic & authentication rules
+- **Models** → Database queries only
+- **Middleware** → Authentication, authorization, error handling
 
 ---
 
-## Development Phases
+## 🧠 Technical Design Decisions
 
-### 🟢 Phase 1 – Server & Application Setup
+- **JWT Authentication**
+  Stateless authentication for scalability
 
-- Express server initialized
-- `server.js` vs `app.js` separation
-- Environment variables loaded with dotenv
-- Development workflow using nodemon
+- **Refresh Tokens (DB-backed)**
+  Enables secure session continuation and token revocation
 
-**Key learning:** Server startup and request handling are separate responsibilities.
+- **MySQL (Relational DB)**
+  Structured user and token management
 
----
+- **Layered Architecture**
+  Improves maintainability, testability, and scalability
 
-### 🟢 Phase 2 – Database Connection
-
-- MySQL connection pool using `mysql2`
-- Connection verified at startup
-- Fail-fast strategy for DB misconfiguration
-
-**Key learning:** Database issues should surface early, not during API execution.
+- **Middleware-driven flow**
+  Centralizes cross-cutting concerns like auth and error handling
 
 ---
 
-### 🟢 Phase 3 – Routing Layer
+## 🔐 Security Features
 
-- Routes organized by feature
-- Route prefixes registered in `app.js`
-
-Example:
-
-```
-/auth + /login → /auth/login
-```
-
-**Key learning:** Most `Cannot GET /...` errors originate from routing misconfiguration.
-
----
-
-### 🟢 Phase 4 – Controller Layer
-
-Controllers handle:
-
-- Request data extraction
-- Validation
-- Response formatting
-
-Controllers do **not**:
-
-- Access the database
-- Contain business logic
-
-**Key learning:** Controllers are traffic managers, not decision makers.
-
----
-
-### 🟢 Phase 5 – Service Layer (Business Logic)
-
-- User registration logic
 - Password hashing using bcrypt
-- Login verification
-- JWT generation
-- Business rules enforced here
-
-**Key learning:** Business logic must be independent of Express and HTTP.
+- JWT expiration handling
+- Refresh token revocation (logout support)
+- Rate limiting (100 requests / 15 minutes per IP)
+- Helmet for secure HTTP headers
+- CORS protection
 
 ---
 
-### 🟢 Phase 6 – Middleware (JWT & RBAC)
+## 📦 Tech Stack
 
-#### JWT Authentication Middleware
+- Node.js
+- Express.js
+- MySQL (mysql2)
+- bcryptjs
+- jsonwebtoken
+- dotenv
+- Swagger UI
 
-- Extracts token from `Authorization` header
-- Verifies token signature & expiry
-- Attaches decoded payload to `req.user`
+---
 
-#### Role Authorization Middleware
-
-- Reads `req.user.role`
-- Blocks unauthorized access
-
-Execution order:
+## 📁 Project Structure
 
 ```
-Request
- → JWT middleware
- → Role middleware
- → Controller
+src/
+├── server.js
+├── app.js
+│
+├── config/
+│   ├── db.js
+│   └── swagger.js
+│
+├── middleware/
+│   ├── auth.middleware.js
+│   ├── role.middleware.js
+│   └── error.middleware.js
+│
+├── models/
+│   ├── user.model.js
+│   └── refreshToken.model.js
+│
+├── auth/
+│   ├── auth.routes.js
+│   ├── auth.controller.js
+│   └── auth.service.js
+│
+└── utils/
+    └── token.util.js
 ```
 
-**Key learning:** Middleware controls access flow before controllers execute.
-
 ---
 
-### 🟢 Phase 7 – Database Models & Data Flow
+## 🔌 API Endpoints
 
-- Models contain SQL only
-- Services call models
-- Data flows upward to controllers
+### 🔑 Authentication
 
-**Key learning:** Models are data access layers, not logic layers.
-
----
-
-### 🟢 Phase 8 – JWT Refresh Tokens & Logout
-
-- Short-lived access tokens
-- Long-lived refresh tokens
-- Refresh tokens stored & validated
-- Logout revokes refresh tokens
-- Token regeneration preserves role data
-
-**Key learning:** Authentication must support secure session continuation and revocation.
-
----
-
-### 🟢 Phase 9 – Swagger UI (API Documentation & Testing)
-
-- Swagger UI added as API-first “UI”
-- All auth endpoints documented
-- JWT Bearer authentication supported
-- Protected routes testable in browser
-
-**Key learning:** Backend services can be demonstrated and tested without a frontend.
-
----
-
-## Implemented APIs (Current)
-
-### User Registration
-
-**POST `/auth/register`**
-
-Features:
-
-- Input validation
-- Duplicate email prevention
-- Password hashing
-- Safe response (no sensitive data)
-
----
-
-### User Login
-
-**POST `/auth/login`**
-
-Features:
-
-- Credential verification
-- Access token generation
-- Refresh token generation
-- Role embedded in JWT payload
-
----
-
-### Token Refresh
-
-**POST `/auth/refresh`**
-
-Features:
-
-- Issues new access token
-- Preserves user identity & role
-- Does not require re-login
-
----
-
-### Logout
-
-**POST `/auth/logout`**
-
-Features:
-
-- Refresh token revocation
-- Session invalidation
-
----
-
-### Protected User Profile
-
-**GET `/auth/user/profile`**
-
-Features:
-
-- JWT authentication
-- Role-based authorization
-- Access controlled by middleware
-
----
-
-## How to Test the APIs (Swagger UI)
-
-### Open Swagger UI
+#### Register
 
 ```
-http://localhost:5000/api-docs
+POST /api/v1/auth/register
 ```
 
-### Step 1: Login
-
-- Call `POST /auth/login`
-- Copy the **accessToken**
-
-### Step 2: Authorize
-
-- Click **Authorize 🔒**
-- Paste:
+#### Login
 
 ```
-Bearer <accessToken>
+POST /api/v1/auth/login
 ```
 
-### Step 3: Call Protected APIs
+#### Refresh Token
 
-- Execute `GET /auth/user/profile`
+```
+POST /api/v1/auth/refresh
+```
 
-### Step 4: Refresh Token (Optional)
+#### Logout (Revoke Token)
 
-- Call `POST /auth/refresh`
-- Re-authorize with new access token
+```
+POST /api/v1/auth/logout
+```
 
 ---
 
-## Current Status
+### 👤 Protected Routes
 
-- Server stable
-- Database connection reliable
-- Full auth lifecycle implemented
-- Refresh tokens & logout supported
-- Swagger UI enabled
-- Layered architecture complete
-- Execution flow fully understood
+#### Get Profile
 
----
+```
+GET /api/v1/auth/user/profile
+```
 
-## Notes
+Requires:
 
-This project is intentionally built **slowly and methodically** to strengthen backend fundamentals.
-
-The focus is on:
-
-- Execution flow understanding
-- Debugging with logic
-- Clean architecture
-- Production-ready thinking
-
-This repository represents a **strong backend foundation**, not just a demo application.
+```
+Authorization: Bearer <access_token>
+```
 
 ---
 
-## License
+## 🧪 API Testing (Swagger)
 
-This project is created for **learning and educational purposes**.
+1. Open:
+
+```
+/api-docs
+```
+
+2. Login → Copy access token
+
+3. Click **Authorize**
+
+```
+Bearer <access_token>
+```
+
+4. Test protected APIs
+
+---
+
+## 🚀 Deployment
+
+- **Backend**: Render
+- **Database**: Railway (MySQL)
+
+### Environment Variables
+
+```
+DB_HOST=
+DB_PORT=
+DB_USER=
+DB_PASSWORD=
+DB_NAME=
+
+JWT_SECRET=
+JWT_REFRESH_SECRET=
+PORT=
+```
+
+---
+
+## 📊 Current Status
+
+- Production deployment complete
+- Database integrated (cloud MySQL)
+- Full authentication lifecycle implemented
+- Token refresh & revocation working
+- Protected routes secured with middleware
+- Swagger documentation available
+
+---
+
+## 📌 Notes
+
+This project reflects a real-world backend service structure and demonstrates:
+
+- Clean code organization
+- Secure authentication practices
+- Proper separation of concerns
+- Production deployment workflow
+
+---
+
+## 📜 License
+
+This project is for educational and demonstration purposes.
+
+---
