@@ -43,5 +43,6 @@ const revokeRefreshToken = async (token) => {
 
 module.exports = {
   saveRefreshToken,
-  findRefreshToken
+  findRefreshToken,
+  revokeRefreshToken 
 };
