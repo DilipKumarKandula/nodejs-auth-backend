@@ -1,44 +1,56 @@
 # 🚀 Node.js Auth Backend (Production-Ready)
 
-A scalable, production-grade authentication and authorization backend built using Node.js, Express, and MySQL.
+A scalable authentication and authorization backend built with **Node.js, Express, and MySQL**, designed using real-world backend engineering practices.
 
-This project demonstrates real-world backend engineering practices including JWT-based authentication, refresh token lifecycle management, role-based access control (RBAC), and secure API design.
-
----
-
-## 🌐 Live API
-
-**Base URL**
-
-```
-https://auth-backend-hta6.onrender.com
-```
-
-**Swagger Documentation**
-
-```
-https://auth-backend-hta6.onrender.com/api-docs
-```
+This project implements a complete authentication lifecycle including JWT-based login, refresh token management, and role-based access control (RBAC), and is fully deployed in production.
 
 ---
 
-## ⚡ Key Features
+## 🌐 Live Demo
 
-- JWT-based authentication (Access + Refresh tokens)
-- Secure refresh token lifecycle with DB persistence
-- Role-based access control (RBAC)
-- Layered architecture (Controller → Service → Model)
-- Centralized error handling
-- API rate limiting (DDoS/basic abuse protection)
-- Secure HTTP headers using Helmet
-- CORS configuration for controlled access
-- Swagger UI for API testing & documentation
+- **API Base URL**
+  [https://auth-backend-hta6.onrender.com](https://auth-backend-hta6.onrender.com)
+
+- **Swagger Docs (Test APIs)**
+  [https://auth-backend-hta6.onrender.com/api-docs](https://auth-backend-hta6.onrender.com/api-docs)
+
+---
+
+## ⚡ What This Project Demonstrates
+
+- Stateless authentication using **JWT (Access + Refresh tokens)**
+- Secure **refresh token lifecycle with database persistence**
+- **Role-Based Access Control (RBAC)**
+- Clean layered architecture used in production systems
+- API security (rate limiting, headers, CORS)
+- Container-ready backend (Docker support)
+
+---
+
+## 🧪 Quick Start (Local)
+
+```bash
+npm install
+npm run dev
+```
+
+Then open:
+
+```
+http://localhost:5000/api-docs
+```
+
+---
+
+## 🐳 Run with Docker (Optional)
+
+```bash
+docker compose up --build
+```
 
 ---
 
 ## 🏗️ Architecture
-
-This project follows a clean, layered architecture used in production systems:
 
 ```
 Client
@@ -53,39 +65,20 @@ Client
 
 ### Responsibilities
 
-- **Controllers** → Handle HTTP requests/responses
-- **Services** → Business logic & authentication rules
-- **Models** → Database queries only
-- **Middleware** → Authentication, authorization, error handling
-
----
-
-## 🧠 Technical Design Decisions
-
-- **JWT Authentication**
-  Stateless authentication for scalability
-
-- **Refresh Tokens (DB-backed)**
-  Enables secure session continuation and token revocation
-
-- **MySQL (Relational DB)**
-  Structured user and token management
-
-- **Layered Architecture**
-  Improves maintainability, testability, and scalability
-
-- **Middleware-driven flow**
-  Centralizes cross-cutting concerns like auth and error handling
+- **Controllers** → Handle request/response
+- **Services** → Business logic & authentication
+- **Models** → Database queries
+- **Middleware** → Auth, RBAC, error handling
 
 ---
 
 ## 🔐 Security Features
 
 - Password hashing using bcrypt
-- JWT expiration handling
+- JWT expiration & validation
 - Refresh token revocation (logout support)
-- Rate limiting (100 requests / 15 minutes per IP)
-- Helmet for secure HTTP headers
+- Rate limiting (100 req / 15 min)
+- Secure headers via Helmet
 - CORS protection
 
 ---
@@ -94,82 +87,26 @@ Client
 
 - Node.js
 - Express.js
-- MySQL (mysql2)
+- MySQL (Railway)
 - bcryptjs
 - jsonwebtoken
-- dotenv
 - Swagger UI
-
----
-
-## 📁 Project Structure
-
-```
-src/
-├── server.js
-├── app.js
-│
-├── config/
-│   ├── db.js
-│   └── swagger.js
-│
-├── middleware/
-│   ├── auth.middleware.js
-│   ├── role.middleware.js
-│   └── error.middleware.js
-│
-├── models/
-│   ├── user.model.js
-│   └── refreshToken.model.js
-│
-├── auth/
-│   ├── auth.routes.js
-│   ├── auth.controller.js
-│   └── auth.service.js
-│
-└── utils/
-    └── token.util.js
-```
+- Docker
 
 ---
 
 ## 🔌 API Endpoints
 
-### 🔑 Authentication
+### Authentication
 
-#### Register
+- `POST /api/v1/auth/register`
+- `POST /api/v1/auth/login`
+- `POST /api/v1/auth/refresh`
+- `POST /api/v1/auth/logout`
 
-```
-POST /api/v1/auth/register
-```
+### Protected
 
-#### Login
-
-```
-POST /api/v1/auth/login
-```
-
-#### Refresh Token
-
-```
-POST /api/v1/auth/refresh
-```
-
-#### Logout (Revoke Token)
-
-```
-POST /api/v1/auth/logout
-```
-
----
-
-### 👤 Protected Routes
-
-#### Get Profile
-
-```
-GET /api/v1/auth/user/profile
-```
+- `GET /api/v1/auth/user/profile`
 
 Requires:
 
@@ -179,71 +116,48 @@ Authorization: Bearer <access_token>
 
 ---
 
-## 🧪 API Testing (Swagger)
+## 🧠 Key Design Decisions
 
-1. Open:
-
-```
-/api-docs
-```
-
-2. Login → Copy access token
-
-3. Click **Authorize**
-
-```
-Bearer <access_token>
-```
-
-4. Test protected APIs
+- **JWT Authentication** → scalable & stateless
+- **Refresh Tokens in DB** → secure session control & revocation
+- **Layered Architecture** → maintainable & testable
+- **Middleware-driven flow** → clean separation of concerns
 
 ---
 
 ## 🚀 Deployment
 
-- **Backend**: Render
-- **Database**: Railway (MySQL)
+- **Backend** → Render
+- **Database** → Railway (MySQL)
 
-### Environment Variables
+---
+
+## 📁 Project Structure
 
 ```
-DB_HOST=
-DB_PORT=
-DB_USER=
-DB_PASSWORD=
-DB_NAME=
-
-JWT_SECRET=
-JWT_REFRESH_SECRET=
-PORT=
+src/
+├── config/
+├── middleware/
+├── models/
+├── auth/
+├── utils/
+├── app.js
+└── server.js
 ```
 
 ---
 
-## 📊 Current Status
+## 📌 Summary
 
-- Production deployment complete
-- Database integrated (cloud MySQL)
-- Full authentication lifecycle implemented
-- Token refresh & revocation working
-- Protected routes secured with middleware
-- Swagger documentation available
+This project reflects a **production-style backend system** with:
 
----
-
-## 📌 Notes
-
-This project reflects a real-world backend service structure and demonstrates:
-
+- Secure authentication architecture
 - Clean code organization
-- Secure authentication practices
-- Proper separation of concerns
-- Production deployment workflow
+- Real-world deployment setup
+- Scalable and maintainable design
 
 ---
 
 ## 📜 License
 
-This project is for educational and demonstration purposes.
-
----
+For educational and demonstration purposes.
