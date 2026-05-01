@@ -9,10 +9,17 @@ const options = {
       description: "Authentication & Authorization API documentation"
     },
     servers: [
-      {
-        url: "https://auth-backend-hta6.onrender.com/api/v1",
-        description: "server"
-      }
+        {
+          url: "https://auth-backend-hta6.onrender.com/api/v1",
+          description: "server"
+        },
+  
+        {
+          url: "http://localhost:5000/api/v1",
+          description: "Local server"
+        }
+
+
     ],
     components: {
       securitySchemes: {

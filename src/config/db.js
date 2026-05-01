@@ -17,10 +17,16 @@ const pool = mysql.createPool({
 pool.getConnection((err, connection) => {
   if (err) {
     console.error("❌ Database connection failed:", err.message);
+    
   } else {
     console.log("✅ Database connected successfull");
     connection.release();
   }
+//   console.log("DB CONFIG:", {
+//   host: process.env.DB_HOST,
+//   user: process.env.DB_USER,
+//   db: process.env.DB_NAME
+// });
 });
 
 module.exports = pool.promise();
