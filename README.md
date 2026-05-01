@@ -8,8 +8,9 @@ This project implements a complete authentication lifecycle including JWT-based 
 
 ## 🌐 Live Demo
 
+<!--
 - **API Base URL**
-  [https://auth-backend-hta6.onrender.com](https://auth-backend-hta6.onrender.com)
+  [https://auth-backend-hta6.onrender.com](https://auth-backend-hta6.onrender.com) -->
 
 - **Swagger Docs (Test APIs)**
   [https://auth-backend-hta6.onrender.com/api-docs](https://auth-backend-hta6.onrender.com/api-docs)
